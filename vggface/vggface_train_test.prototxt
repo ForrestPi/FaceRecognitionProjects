@@ -1,0 +1,39 @@
+name: "vggface_train_test.prototxt"
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 224
+    mean_file: "vggface/face_mean.binaryproto"
+  }
+  data_param {
+    source: "vggface/face_train_lmdb"
+    batch_size: 20
+    backend: LMDB
+  }
+}
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mirror: false
+    crop_size: 224
+    mean_file: "vggface/face_mean.binaryproto"
+  }
+  data_param {
+    source: "vggface/face_val_lmdb"
+    batch_size: 20
+    backend: LMDB
+  }
+}
